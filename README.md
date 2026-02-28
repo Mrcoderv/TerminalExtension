@@ -81,6 +81,67 @@ Add your own sounds in settings:
 ## 🇮🳳 Inspired By
 
 - **Faah** (فاہ) — The universal sound of disappointment
-- **Jai Hoo** (जय हो) — Victory! Glory! 
+- **Jai Hoo** (ज हो) — Victory! Glory! 
 
 Made with ❤️ for developers who feel things deeply.
+
+---
+
+# 🛠️ How to Use the Faah & Jai Hoo Extension
+
+## 📥 Installation
+
+1. Open Visual Studio Code.
+2. Go to the Extensions Marketplace (`Ctrl+Shift+X` / `Cmd+Shift+X`).
+3. Search for **Faah & Jai Hoo - Code Sound Effects**.
+4. Click **Install**.
+
+Alternatively, you can install the extension manually:
+
+1. Download the `.vsix` file from the [GitHub Releases](https://github.com/Mrcoderv/TerminalExtension).
+2. Open the Extensions view in VS Code.
+3. Click the `...` menu in the top-right corner and select **Install from VSIX...**.
+4. Select the downloaded `.vsix` file.
+
+---
+
+## 🔧 Configuration
+
+1. Open the settings (`Ctrl+,` / `Cmd+,`).
+2. Search for `Faah Sound`.
+3. Adjust the following settings as needed:
+
+| Setting | Description |
+|---------|-------------|
+| `faahSound.enabled` | Master on/off switch for all sounds. |
+| `faahSound.enableFaah` | Enable the **Faah!** sound for errors. |
+| `faahSound.enableJaiHoo` | Enable the **Jai Hoo!** sound for successes. |
+| `faahSound.volume` | Set the volume (0-100). |
+| `faahSound.customFaahSound` | Path to a custom **Faah!** sound file. |
+| `faahSound.customJaiHooSound` | Path to a custom **Jai Hoo!** sound file. |
+
+---
+
+## 🎮 Testing the Sounds
+
+1. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`).
+2. Run the following commands:
+   - `Faah Sound: Test Faah! Sound`
+   - `Faah Sound: Test Jai Hoo! Sound`
+
+---
+
+## 🐞 Troubleshooting
+
+- **No sound?**
+  - Ensure your system volume is not muted.
+  - Check that the required audio players are installed:
+    - **Linux:** Install `paplay` (PulseAudio) or `aplay` (ALSA).
+  - Verify the sound files exist in the `sounds/` folder.
+
+- **Custom sounds not working?**
+  - Ensure the file path is correct and points to a valid `.wav` or `.mp3` file.
+
+---
+
+For more details, visit the [GitHub repository](https://github.com/Mrcoderv/TerminalExtension).

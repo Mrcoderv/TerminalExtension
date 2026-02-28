@@ -1,20 +1,32 @@
 {
-  "name": "faah-sound",
+  "name": "terminal-jaihoo-and-faah",
   "displayName": "Faah & Jai Hoo - Code Sound Effects",
   "description": "Plays 'Faah!' on errors/failures and 'Jai Hoo!' on successful runs. Never code in silence again!",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "Raghavvian",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": ["Other"],
-  "keywords": ["sound", "faah", "jai hoo", "error sound", "success sound", "fun", "notification"],
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "sound",
+    "faah",
+    "jai hoo",
+    "error sound",
+    "success sound",
+    "fun",
+    "notification"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Mrcoderv/TerminalExtension"
   },
-  "activationEvents": ["onStartupFinished"],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
@@ -83,12 +95,15 @@
     }
   },
   "scripts": {
-    "test": "echo 'No tests defined yet' && exit 0",
+    "start": "node ./extension.js",
+    "test": "node ./node_modules/@vscode/test-electron/out/index.js", 
     "package": "vsce package",
     "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/vscode": "^1.74.0",
-    "@vscode/vsce": "^2.22.0"
-  }
+    "@vscode/test-electron": "^2.0.0",
+    "vscode": "^1.1.37"
+  },
+  "dependencies": {}
 }
