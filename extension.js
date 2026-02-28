@@ -15,35 +15,45 @@ function playSound(soundFile) {
 
   try {
     const platform = process.platform;
-    const volume = config.get('volume', 80); // Default to 80 if not set
+    const volume = config.get('volume', 80); // 0-100
 
     if (platform === 'win32') {
-      // Windows - PowerShell
-      const script = `
-        Add-Type -AssemblyName presentationCore;
-        $player = New-Object system.windows.media.mediaplayer;
-        $player.open('${soundFile.replace(/\\/g, '\\\\')}');
-        $player.Volume = ${volume / 100};
-        $player.Play();
-        Start-Sleep -s 2;
-      `;
-      exec(`powershell -Command "${script.replace(/\n/g, ' ')}"`);
+      // Windows - PowerShell via Base64-encoded command to avoid quote/newline issues
+      const script = [
+        'Add-Type -AssemblyName presentationCore;',
+        '$player = New-Object system.windows.media.mediaplayer;',
+        `$player.open('${soundFile.replace(/\\/g, '\\\\')}');`,
+        `$player.Volume = ${volume / 100};`,
+        '$player.Play();',
+        'Start-Sleep -s 3;'
+      ].join(' ');
+      const encoded = Buffer.from(script, 'utf16le').toString('base64');
+      exec(`powershell -EncodedCommand ${encoded}`);
+
     } else if (platform === 'darwin') {
-      // macOS
-      exec(`afplay "${soundFile}" &`);
+      // macOS - afplay supports -v for volume (0.0 to 1.0)
+      const afplayVolume = (volume / 100).toFixed(2);
+      exec(`afplay -v ${afplayVolume} "${soundFile}"`);
+
     } else {
-      // Linux - try multiple players
-      const players = ['paplay', 'aplay', 'sox', 'mpg123'];
-      for (const player of players) {
+      // Linux - try players with correct volume syntax
+      const players = [
+        { bin: 'paplay', args: `--volume=${Math.round(volume / 100 * 65536)}` },
+        { bin: 'aplay',  args: '' },      // aplay has no volume flag; use system mixer
+        { bin: 'mpg123', args: `-f ${Math.round(volume / 100 * 32768)}` },
+        { bin: 'sox',    args: '' }
+      ];
+
+      for (const { bin, args } of players) {
         try {
-          execSync(`which ${player}`, { stdio: 'ignore' });
-          exec(`${player} --volume=${volume} "${soundFile}" &`);
+          execSync(`which ${bin}`, { stdio: 'ignore' });
+          exec(`${bin} ${args} "${soundFile}"`);
           return;
         } catch (e) {
           continue;
         }
       }
-      // Fallback: VS Code's built-in notification beep
+
       log('⚠️ No audio player found. Install paplay/aplay for Linux sound support.');
     }
   } catch (err) {
@@ -51,6 +61,7 @@ function playSound(soundFile) {
   }
 }
 
+// FIX: actual filename is 'fahhh.wav', not 'faah.wav'
 function getSoundPath(type) {
   const config = vscode.workspace.getConfiguration('faahSound');
   const customPath = config.get(type === 'faah' ? 'customFaahSound' : 'customJaiHooSound');
@@ -59,8 +70,8 @@ function getSoundPath(type) {
     return customPath;
   }
 
-  const ext = require('../package.json');
-  return path.join(__dirname, 'sounds', type === 'faah' ? 'faah.wav' : 'jaihoo.wav');
+  // FIX: removed dead `require('../package.json')` line
+  return path.join(__dirname, 'sounds', type === 'faah' ? 'fahhh.wav' : 'jaihoo.wav');
 }
 
 // ─────────────────────────────────────────
@@ -94,7 +105,6 @@ function updateStatusBar(text, color) {
     : undefined;
   statusBarItem.show();
 
-  // Reset after 3 seconds
   setTimeout(() => {
     statusBarItem.text = '$(music) Faah';
     statusBarItem.backgroundColor = undefined;
@@ -112,12 +122,10 @@ function log(msg) {
 //  Task monitoring
 // ─────────────────────────────────────────
 function watchTasks() {
-  // Task START
   vscode.tasks.onDidStartTask(e => {
     log(`Task started: ${e.execution.task.name}`);
   });
 
-  // Task END
   vscode.tasks.onDidEndTaskProcess(e => {
     const taskName = e.execution.task.name;
     if (e.exitCode === 0) {
@@ -138,12 +146,8 @@ function watchDebugSessions() {
 
   vscode.debug.onDidTerminateDebugSession(session => {
     log(`Debug session ended: ${session.name}`);
-    // We can't easily tell success/fail from terminate alone, 
-    // but crashed sessions often have type info
-    // Use exit code via custom event if available
   });
 
-  // Listen to debug console output for error patterns
   vscode.debug.onDidReceiveDebugSessionCustomEvent(e => {
     if (e.event === 'exited') {
       if (e.body && e.body.exitCode === 0) {
@@ -162,8 +166,7 @@ function watchDiagnostics() {
   let previousErrorCount = 0;
   let debounceTimer = null;
 
-  vscode.languages.onDidChangeDiagnostics(e => {
-    // Debounce to avoid rapid firing while typing
+  vscode.languages.onDidChangeDiagnostics(() => {
     if (debounceTimer) clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       let totalErrors = 0;
@@ -172,17 +175,14 @@ function watchDiagnostics() {
         totalErrors += diags.filter(d => d.severity === vscode.DiagnosticSeverity.Error).length;
       });
 
-      // New errors appeared
       if (totalErrors > previousErrorCount && previousErrorCount === 0) {
         playFaah(`New compile error detected (${totalErrors} errors)`);
-      }
-      // All errors resolved!
-      else if (totalErrors === 0 && previousErrorCount > 0) {
+      } else if (totalErrors === 0 && previousErrorCount > 0) {
         playJaiHoo(`All errors resolved! Clean build 🎉`);
       }
 
       previousErrorCount = totalErrors;
-    }, 1500); // Wait 1.5s after last change
+    }, 1500);
   });
 }
 
@@ -190,14 +190,16 @@ function watchDiagnostics() {
 //  Terminal monitoring (watches exit codes)
 // ─────────────────────────────────────────
 function watchTerminals() {
+  // FIX: no need to await processId — exitStatus is synchronously available on close
   vscode.window.onDidCloseTerminal(terminal => {
-    terminal.processId.then(pid => {
-      terminal.exitStatus && terminal.exitStatus.code !== undefined
-        ? terminal.exitStatus.code === 0
-          ? playJaiHoo(`Terminal "${terminal.name}" exited successfully`)
-          : playFaah(`Terminal "${terminal.name}" exited with code ${terminal.exitStatus.code}`)
-        : null;
-    }).catch(() => {});
+    const code = terminal.exitStatus && terminal.exitStatus.code;
+    if (code === undefined || code === null) return;
+
+    if (code === 0) {
+      playJaiHoo(`Terminal "${terminal.name}" exited successfully`);
+    } else {
+      playFaah(`Terminal "${terminal.name}" exited with code ${code}`);
+    }
   });
 }
 
@@ -208,7 +210,6 @@ function activate(context) {
   outputChannel = vscode.window.createOutputChannel('Faah Sound');
   log('🎵 Faah & Jai Hoo extension activated!');
 
-  // Status bar
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
   statusBarItem.text = '$(music) Faah';
   statusBarItem.tooltip = 'Faah & Jai Hoo Sound Effects - Active';
@@ -216,13 +217,11 @@ function activate(context) {
   statusBarItem.show();
   context.subscriptions.push(statusBarItem);
 
-  // Start watchers
   watchTasks();
   watchDebugSessions();
   watchDiagnostics();
   watchTerminals();
 
-  // ── Commands ──
   context.subscriptions.push(
     vscode.commands.registerCommand('faahSound.testFaah', () => {
       vscode.window.showInformationMessage('🔴 Playing Faah! sound...');
@@ -246,13 +245,14 @@ function activate(context) {
       statusBarItem.text = '$(mute) Faah (muted)';
     }),
 
-    // Add a new command to set volume dynamically
     vscode.commands.registerCommand('faahSound.setVolume', async () => {
       const volume = await vscode.window.showInputBox({
         prompt: 'Set volume (0-100)',
         validateInput: (value) => {
           const num = Number(value);
-          return isNaN(num) || num < 0 || num > 100 ? 'Please enter a number between 0 and 100' : null;
+          return isNaN(num) || num < 0 || num > 100
+            ? 'Please enter a number between 0 and 100'
+            : null;
         }
       });
 

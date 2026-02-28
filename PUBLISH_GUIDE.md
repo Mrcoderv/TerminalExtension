@@ -163,3 +163,13 @@ vsce publish patch   # Auto-bumps patch version
 ---
 
 **You're live! Share your extension URL and let everyone Faah and Jai Hoo! 🎉**
+
+## Packaging Your Extension
+
+Ensure you have packaged your extension in a VSIX file format. You can use the `vsce` tool to package your extension. Run the following command in your terminal:
+
+```bash
+vsce package
+```
+
+This will generate a `.vsix` file that you can use to publish your extension.

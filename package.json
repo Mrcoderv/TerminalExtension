@@ -3,7 +3,7 @@
   "displayName": "Faah & Jai Hoo - Code Sound Effects",
   "description": "Plays 'Faah!' on errors/failures and 'Jai Hoo!' on successful runs. Never code in silence again!",
   "version": "1.0.0",
-  "publisher": "YOUR_PUBLISHER_NAME",
+  "publisher": "Raghavvian",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.74.0"
@@ -12,7 +12,7 @@
   "keywords": ["sound", "faah", "jai hoo", "error sound", "success sound", "fun", "notification"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/faah-sound"
+    "url": "https://github.com/Mrcoderv/TerminalExtension"
   },
   "activationEvents": ["onStartupFinished"],
   "main": "./extension.js",
@@ -20,22 +20,27 @@
     "commands": [
       {
         "command": "faahSound.testFaah",
-        "title": "🔊 Test Faah! Sound",
+        "title": "Test Faah! Sound",
         "category": "Faah Sound"
       },
       {
         "command": "faahSound.testJaiHoo",
-        "title": "🔊 Test Jai Hoo! Sound",
+        "title": "Test Jai Hoo! Sound",
         "category": "Faah Sound"
       },
       {
         "command": "faahSound.enable",
-        "title": "✅ Enable Faah Sound",
+        "title": "Enable Faah Sound",
         "category": "Faah Sound"
       },
       {
         "command": "faahSound.disable",
-        "title": "❌ Disable Faah Sound",
+        "title": "Disable Faah Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.setVolume",
+        "title": "Set Volume",
         "category": "Faah Sound"
       }
     ],
@@ -62,10 +67,7 @@
           "default": 80,
           "minimum": 0,
           "maximum": 100,
-          "description": "Set the volume for sound effects (0-100).",
-          "ui": {
-            "type": "slider"
-          }
+          "description": "Set the volume for sound effects (0-100)."
         },
         "faahSound.customFaahSound": {
           "type": "string",
