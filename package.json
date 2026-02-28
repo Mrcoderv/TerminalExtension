@@ -1,0 +1,92 @@
+{
+  "name": "faah-sound",
+  "displayName": "Faah & Jai Hoo - Code Sound Effects",
+  "description": "Plays 'Faah!' on errors/failures and 'Jai Hoo!' on successful runs. Never code in silence again!",
+  "version": "1.0.0",
+  "publisher": "YOUR_PUBLISHER_NAME",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other"],
+  "keywords": ["sound", "faah", "jai hoo", "error sound", "success sound", "fun", "notification"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/faah-sound"
+  },
+  "activationEvents": ["onStartupFinished"],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "faahSound.testFaah",
+        "title": "🔊 Test Faah! Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.testJaiHoo",
+        "title": "🔊 Test Jai Hoo! Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.enable",
+        "title": "✅ Enable Faah Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.disable",
+        "title": "❌ Disable Faah Sound",
+        "category": "Faah Sound"
+      }
+    ],
+    "configuration": {
+      "title": "Faah Sound",
+      "properties": {
+        "faahSound.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable all sound effects"
+        },
+        "faahSound.enableFaah": {
+          "type": "boolean",
+          "default": true,
+          "description": "Play 'Faah!' sound on errors and failures"
+        },
+        "faahSound.enableJaiHoo": {
+          "type": "boolean",
+          "default": true,
+          "description": "Play 'Jai Hoo!' sound on successful runs"
+        },
+        "faahSound.volume": {
+          "type": "number",
+          "default": 80,
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Set the volume for sound effects (0-100).",
+          "ui": {
+            "type": "slider"
+          }
+        },
+        "faahSound.customFaahSound": {
+          "type": "string",
+          "default": "",
+          "description": "Path to custom Faah sound file (.wav or .mp3). Leave empty to use default."
+        },
+        "faahSound.customJaiHooSound": {
+          "type": "string",
+          "default": "",
+          "description": "Path to custom Jai Hoo sound file (.wav or .mp3). Leave empty to use default."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "echo 'No tests defined yet' && exit 0",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}
