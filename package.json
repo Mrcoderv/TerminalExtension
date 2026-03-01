@@ -2,108 +2,92 @@
   "name": "terminal-jaihoo-and-faah",
   "displayName": "Faah & Jai Hoo - Code Sound Effects",
   "description": "Plays 'Faah!' on errors/failures and 'Jai Hoo!' on successful runs. Never code in silence again!",
-  "version": "1.2.0",
+  "version": "1.3.1",
   "publisher": "Raghavvian",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": [
-    "Other"
-  ],
+  "categories": ["Other"],
   "keywords": [
     "sound",
     "faah",
+    "faaha",
+    "faaah",
     "jai hoo",
+    "jaihoo",
+    "jai ho",
+    "terminal sound",
+    "terminal sound effect",
+    "sound effect",
     "error sound",
     "success sound",
+    "build sound",
+    "task sound",
+    "audio alert",
+    "audio notification",
+    "coding sound",
     "fun",
-    "notification"
+    "notification",
+    "productivity",
+    "developer tools",
+    "task runner",
+    "build notification",
+    "alert",
+    "beep",
+    "bollywood"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Mrcoderv/TerminalExtension"
   },
-  "activationEvents": [
-    "onStartupFinished"
-  ],
+  "activationEvents": ["*"],
   "main": "./extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "faahSound.testFaah",
-        "title": "Test Faah! Sound",
-        "category": "Faah Sound"
-      },
-      {
-        "command": "faahSound.testJaiHoo",
-        "title": "Test Jai Hoo! Sound",
-        "category": "Faah Sound"
-      },
-      {
-        "command": "faahSound.enable",
-        "title": "Enable Faah Sound",
-        "category": "Faah Sound"
-      },
-      {
-        "command": "faahSound.disable",
-        "title": "Disable Faah Sound",
-        "category": "Faah Sound"
-      },
-      {
-        "command": "faahSound.setVolume",
-        "title": "Set Volume",
-        "category": "Faah Sound"
-      }
+      { "command": "faahSound.testFaah", "title": "Test Faah! Sound", "category": "Faah Sound" },
+      { "command": "faahSound.testJaiHoo", "title": "Test Jai Hoo! Sound", "category": "Faah Sound" },
+      { "command": "faahSound.enable", "title": "Enable Faah Sound", "category": "Faah Sound" },
+      { "command": "faahSound.disable", "title": "Disable Faah Sound", "category": "Faah Sound" },
+      { "command": "faahSound.setVolume", "title": "Set Volume", "category": "Faah Sound" }
     ],
     "configuration": {
       "title": "Faah Sound",
       "properties": {
         "faahSound.enabled": {
-          "type": "boolean",
-          "default": true,
+          "type": "boolean", "default": true,
           "description": "Enable or disable all sound effects"
         },
         "faahSound.enableFaah": {
-          "type": "boolean",
-          "default": true,
+          "type": "boolean", "default": true,
           "description": "Play 'Faah!' sound on errors and failures"
         },
         "faahSound.enableJaiHoo": {
-          "type": "boolean",
-          "default": true,
+          "type": "boolean", "default": true,
           "description": "Play 'Jai Hoo!' sound on successful runs"
         },
         "faahSound.volume": {
-          "type": "number",
-          "default": 80,
-          "minimum": 0,
-          "maximum": 100,
-          "description": "Set the volume for sound effects (0-100)."
+          "type": "number", "default": 80, "minimum": 0, "maximum": 100,
+          "description": "Set the volume for sound effects (0-100)"
         },
         "faahSound.customFaahSound": {
-          "type": "string",
-          "default": "",
-          "description": "Path to custom Faah sound file (.wav or .mp3). Leave empty to use default."
+          "type": "string", "default": "",
+          "description": "Path to custom Faah sound file (.wav). Leave empty to use default."
         },
         "faahSound.customJaiHooSound": {
-          "type": "string",
-          "default": "",
-          "description": "Path to custom Jai Hoo sound file (.wav or .mp3). Leave empty to use default."
+          "type": "string", "default": "",
+          "description": "Path to custom Jai Hoo sound file (.wav). Leave empty to use default."
         }
       }
     }
   },
   "scripts": {
-    "start": "node ./extension.js",
-    "test": "node ./node_modules/@vscode/test-electron/out/index.js", 
     "package": "vsce package",
     "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/vscode": "^1.74.0",
-    "@vscode/test-electron": "^2.0.0",
-    "vscode": "^1.1.37"
+    "@vscode/vsce": "^2.0.0"
   },
   "dependencies": {}
 }
