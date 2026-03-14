@@ -2,7 +2,7 @@
   "name": "terminal-jaihoo-and-faah",
   "displayName": "Faah & Jai Hoo - Code Sound Effects",
   "description": "Plays 'Faah!' on errors/failures and 'Jai Hoo!' on successful runs. Never code in silence again!",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "publisher": "Raghavvian",
   "icon": "icon.png",
   "engines": {
