@@ -2,13 +2,15 @@
   "name": "terminal-jaihoo-and-faah",
   "displayName": "Faah & Jai Hoo - Code Sound Effects",
   "description": "Plays 'Faah!' on errors/failures and 'Jai Hoo!' on successful runs. Never code in silence again!",
-  "version": "1.3.1",
+  "version": "2.1.1",
   "publisher": "Raghavvian",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.74.0"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "keywords": [
     "sound",
     "faah",
@@ -41,42 +43,113 @@
     "type": "git",
     "url": "https://github.com/Mrcoderv/TerminalExtension"
   },
-  "activationEvents": ["*"],
+  "activationEvents": [
+    "*"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
-      { "command": "faahSound.testFaah", "title": "Test Faah! Sound", "category": "Faah Sound" },
-      { "command": "faahSound.testJaiHoo", "title": "Test Jai Hoo! Sound", "category": "Faah Sound" },
-      { "command": "faahSound.enable", "title": "Enable Faah Sound", "category": "Faah Sound" },
-      { "command": "faahSound.disable", "title": "Disable Faah Sound", "category": "Faah Sound" },
-      { "command": "faahSound.setVolume", "title": "Set Volume", "category": "Faah Sound" }
+      {
+        "command": "faahSound.testFaah",
+        "title": "Test Faah! Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.testJaiHoo",
+        "title": "Test Jai Hoo! Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.customSounds",
+        "title": "Set Custom Sounds",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.setCustomFaah",
+        "title": "Set Custom Faah! Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.setCustomJaiHoo",
+        "title": "Set Custom Jai Hoo! Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.enable",
+        "title": "Enable Faah Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.disable",
+        "title": "Disable Faah Sound",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.setVolume",
+        "title": "Set Volume",
+        "category": "Faah Sound"
+      },
+      {
+        "command": "faahSound.resetErrorCount",
+        "title": "Reset Error Count",
+        "category": "Faah Sound"
+      }
     ],
     "configuration": {
       "title": "Faah Sound",
       "properties": {
         "faahSound.enabled": {
-          "type": "boolean", "default": true,
-          "description": "Enable or disable all sound effects"
+          "type": "boolean",
+          "default": true,
+          "description": "Master on/off switch for all sounds"
         },
         "faahSound.enableFaah": {
-          "type": "boolean", "default": true,
-          "description": "Play 'Faah!' sound on errors and failures"
+          "type": "boolean",
+          "default": true,
+          "description": "Play Faah! sound on errors and failures"
         },
         "faahSound.enableJaiHoo": {
-          "type": "boolean", "default": true,
-          "description": "Play 'Jai Hoo!' sound on successful runs"
+          "type": "boolean",
+          "default": true,
+          "description": "Play Jai Hoo! sound on successful runs"
         },
         "faahSound.volume": {
-          "type": "number", "default": 80, "minimum": 0, "maximum": 100,
-          "description": "Set the volume for sound effects (0-100)"
+          "type": "number",
+          "default": 80,
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Volume level (0-100)"
+        },
+        "faahSound.cooldownMs": {
+          "type": "number",
+          "default": 1500,
+          "minimum": 0,
+          "description": "Minimum ms between sounds (anti-spam)"
+        },
+        "faahSound.playOnDiagnosticsError": {
+          "type": "boolean",
+          "default": true,
+          "description": "Play Faah! when new red squiggly errors appear in editor"
+        },
+        "faahSound.playOnDebugFailure": {
+          "type": "boolean",
+          "default": true,
+          "description": "Play Faah! when debug session ends with non-zero exit code"
+        },
+        "faahSound.playOnDebugSuccess": {
+          "type": "boolean",
+          "default": true,
+          "description": "Play Jai Hoo! when debug session ends successfully"
         },
         "faahSound.customFaahSound": {
-          "type": "string", "default": "",
-          "description": "Path to custom Faah sound file (.wav). Leave empty to use default."
+          "type": "string",
+          "default": "",
+          "description": "Path to custom failure sound file (.mp3 / .wav / .ogg / .m4a). Use 'Faah Sound: Set Custom Faah! Sound' command to browse."
         },
         "faahSound.customJaiHooSound": {
-          "type": "string", "default": "",
-          "description": "Path to custom Jai Hoo sound file (.wav). Leave empty to use default."
+          "type": "string",
+          "default": "",
+          "description": "Path to custom success sound file (.mp3 / .wav / .ogg / .m4a). Use 'Faah Sound: Set Custom Jai Hoo! Sound' command to browse."
         }
       }
     }
@@ -88,6 +161,5 @@
   "devDependencies": {
     "@types/vscode": "^1.74.0",
     "@vscode/vsce": "^2.0.0"
-  },
-  "dependencies": {}
+  }
 }

@@ -1,100 +1,61 @@
 
 # 🎵 Faah & Jai Hoo — Code Sound Effects
 
-> Simple sound effects for your coding tasks. Never code in silence again!
+> Never code in silence again!
 
-| Event                                | Sound              |
-| ------------------------------------ | ------------------ |
-| ❌ Task failure (non-zero exit code) | **Faah!**    |
-| ✅ Task success (exit code 0)        | **Jai Hoo!** |
-
----
-
-## 🚀 Features
-
-* 🔴 **Faah!** — Plays when a task fails.
-* 🟢 **Jai Hoo!** — Plays when a task succeeds.
-* 🔊 **Volume control** — Set volume from 0 to 100.
-* 🎵 **Custom sounds** — Use your own `.wav` files.
-* ✅ **Enable / Disable** — Toggle sounds without uninstalling.
-* 🧪 **Test commands** — Preview sounds anytime from the Command Palette.
+| Event                        | Sound              |
+| ---------------------------- | ------------------ |
+| ✅ Program runs successfully | **Jai Hoo!** |
+| ❌ Error / failure           | **Faah!**    |
 
 ---
 
-## 🔊 Platform Support
+## Features
 
-| OS      | Audio Method                                      |
-| ------- | ------------------------------------------------- |
-| Windows | PowerShell `System.Media.SoundPlayer`(built-in) |
-| macOS   | `afplay`(built-in)                              |
-| Linux   | Auto-detects best available player (see below)    |
-
-### 🐧 Linux Audio — Auto Fallback
-
-The extension automatically tries these players in order — no setup needed if any one is installed:
-
-| Priority | Player     | Install command                       |
-| -------- | ---------- | ------------------------------------- |
-| 1st      | `paplay` | `sudo apt install pulseaudio-utils` |
-| 2nd      | `aplay`  | `sudo apt install alsa-utils`       |
-| 3rd      | `ffplay` | `sudo apt install ffmpeg`           |
-| 4th      | `mpg123` | `sudo apt install mpg123`           |
-| 5th      | `cvlc`   | `sudo apt install vlc`              |
-
-> Most Linux systems already have `aplay` (ALSA) built in — so it should just work out of the box.
+* Plays on terminal commands, tasks, debug sessions, and editor errors
+* Custom sounds — use your own `.mp3` or `.wav`
+* Volume control
+* Cross-platform — Windows, macOS, Linux
 
 ---
 
-## 📂 Sound Files
+## Set a Custom Sound
 
-The extension uses the following sound files located in the `sounds/` directory:
+Open Command Palette (`Ctrl+Shift+P`) → type  **Faah Sound** :
 
-* `fahhh.wav` — Failure sound
-* `jaihoo.wav` — Success sound
+* **Set Custom Faah! Sound** — change the failure sound
+* **Set Custom Jai Hoo! Sound** — change the success sound
 
----
-
-## 🛠️ How It Works
-
-The extension listens for task completions in VS Code. Depending on the task's exit code, it plays the appropriate sound:
-
-* **Success (exit code 0):** Plays `jaihoo.wav`
-* **Failure (non-zero exit code):** Plays `fahhh.wav`
+A file picker will open. Pick any `.mp3`, `.wav`, `.ogg`, or `.m4a` file. To go back to the default, run the same command and choose  **Reset to default** .
 
 ---
 
-## ⌨️ Commands
+## Commands
 
-Access these from the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
-
-| Command                 | Description               |
-| ----------------------- | ------------------------- |
-| `Test Faah! Sound`    | Preview the failure sound |
-| `Test Jai Hoo! Sound` | Preview the success sound |
-| `Enable Faah Sound`   | Turn sounds on            |
-| `Disable Faah Sound`  | Turn sounds off           |
-| `Set Volume`          | Set volume level (0–100) |
-
----
-
-## ⚙️ Settings
-
-| Setting                         | Default  | Description                           |
-| ------------------------------- | -------- | ------------------------------------- |
-| `faahSound.enabled`           | `true` | Enable or disable all sound effects   |
-| `faahSound.enableFaah`        | `true` | Toggle failure sound independently    |
-| `faahSound.enableJaiHoo`      | `true` | Toggle success sound independently    |
-| `faahSound.volume`            | `80`   | Volume level (0–100)                 |
-| `faahSound.customFaahSound`   | `""`   | Path to a custom failure `.wav`file |
-| `faahSound.customJaiHooSound` | `""`   | Path to a custom success `.wav`file |
+| Command                         | Description              |
+| ------------------------------- | ------------------------ |
+| `Test Faah! Sound`            | Preview failure sound    |
+| `Test Jai Hoo! Sound`         | Preview success sound    |
+| `Set Custom Faah! Sound`      | Browse for failure sound |
+| `Set Custom Jai Hoo! Sound`   | Browse for success sound |
+| `Set Volume`                  | Set volume (0–100)      |
+| `Enable / Disable Faah Sound` | Toggle on/off            |
 
 ---
 
-## 📦 Repository
+## Settings
 
-[GitHub — Mrcoderv/TerminalExtension](https://github.com/Mrcoderv/TerminalExtension)
+Search `faahSound` in VS Code Settings:
+
+| Setting                         | Default  | Description                  |
+| ------------------------------- | -------- | ---------------------------- |
+| `faahSound.enabled`           | `true` | Master on/off                |
+| `faahSound.volume`            | `80`   | Volume (0–100)              |
+| `faahSound.cooldownMs`        | `1500` | Min ms between sounds        |
+| `faahSound.customFaahSound`   | `""`   | Path to custom failure sound |
+| `faahSound.customJaiHooSound` | `""`   | Path to custom success sound |
 
 ---
 
-> Made with ❤️ by Raghavvian
+> Made with ❤️ by [Raghavvian](https://github.com/Mrcoderv/TerminalExtension)
 >
